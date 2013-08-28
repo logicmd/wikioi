@@ -17,6 +17,8 @@ int main() {
     int n;
     cin >> n;
     int *f =new int[n];
+    for(int i=0; i<n; i++)
+        f[i]=0;
     vector<int> th;
     while(n--) {
         int a;
@@ -26,7 +28,9 @@ int main() {
 
     for(int i=0; i<th.size(); i++) {
         for(int j=v; j>=th[i]; --j) {
-            f[v]=((f[v]>f[v-th[i]]+th[i])?f[v]:(f[v-th[i]]+th[i]));
+            if(f[j]<f[j-th[i]]+th[i])
+                f[j]=f[j-th[i]]+th[i];
+
         }
     }
 
