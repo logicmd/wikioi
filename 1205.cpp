@@ -8,10 +8,17 @@
 #include <algorithm>
 
 using namespace std;
+
 int main() {
-    int min = 0x7fffffff;
-    int max = 0x80000000;
-    cout << min << endl;
-    cout << max << endl;
+    string s;
+    vector<string> v;
+    while(cin>>s) {
+        v.push_back(s);
+    }
+    for(int i=v.size()-1; i>=0; i--) {
+        cout << v[i];
+        if(i!=0) cout << " ";
+    }
+
     return 0;
 }

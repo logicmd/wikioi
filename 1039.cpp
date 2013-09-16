@@ -1,7 +1,7 @@
 //    1 2 3 4 5 6 7
 //1   1 1 1 1 1 1 1
 //2     1 1 2 2 3 3
-//3       1 1 3
+//3       1 1 1
 
 #include <cassert>
 #include <iostream>
@@ -19,16 +19,19 @@ using namespace std;
 
 
 int main() {
-    int n;
-    cin >> n;
-    int k;
-    cin >> k;
+    int n, k;
+    scanf("%d %d", &n, &k);
+
+    if (n==0 || k==0) {
+        cout << 0;
+        return 0;
+    }
 
     int dp[K][N];
 
-    for(int i=1; i<=k; i++) {
-        for(int j=i; j<=n; j++) {
-            if(i==1) {
+    for(int i=1; i<=n; i++) {
+        for(int j=1; j<=i&&j<=k; j++) {
+            if(j==1) {
                 dp[i][j]=1;
                 continue;
             }
@@ -36,16 +39,15 @@ int main() {
                 dp[i][j]=1;
                 continue;
             }
-            int re=0;
-            for(int ii=1; ii<=i/2; ii++) {
-                for(int jj=1; jj<=j/2; jj++) {
-                    re+=dp[ii][jj]*dp[i-ii][j-jj];
-                }
+            dp[i][j]=0;
+            int kk=i-j;
+            for(int jj=1; jj<=kk; jj++) {
+                dp[i][j]+=dp[kk][jj];
             }
-            dp[i][j]=re;
+            //cout << "dp[" << i << "][" << j << "]=" << dp[i][j] << endl;
         }
     }
 
-    cout << dp[k][n] << endl;
+    cout << dp[n][k] << endl;
     return 0;
 }
