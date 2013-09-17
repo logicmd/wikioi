@@ -9,6 +9,7 @@
 
 using namespace std;
 
+bool dp[30][20000];
 
 
 int main() {
@@ -16,25 +17,43 @@ int main() {
     cin >> v;
     int n;
     cin >> n;
-    int *f =new int[n];
-    for(int i=0; i<n; i++)
-        f[i]=0;
+    //int **dp =new int[n];
     vector<int> th;
-    while(n--) {
+    for(int i=0; i<n; i++) {
         int a;
         cin >> a;
         th.push_back(a);
     }
 
-    for(int i=0; i<th.size(); i++) {
-        for(int j=v; j>=th[i]; --j) {
-            if(f[j]<f[j-th[i]]+th[i])
-                f[j]=f[j-th[i]]+th[i];
+    //sort(th.begin(), th.end());
+    for(int i=0; i<n+1; i++) {
+        dp[i][0]=true;
+    }
 
+    // for(int j=0; j<v+1; j++) {
+    //     dp[0][j]=0;
+    // }
+
+    for(int i=0; i<n; i++) {
+        for(int j=0; j<v; j++) {
+            dp[i+1][j+1]=false;
+            if(j+1-th[i]>=0)
+                dp[i+1][j+1]=dp[i][j+1]||dp[i+1][j+1-th[i]];
+            else
+                dp[i+1][j+1]=dp[i][j+1];
         }
     }
 
-    cout << f[v];
+    int maxv=0;
+    for(int j=v; j>=0; j--) {
+        if(dp[n][j]) {
+            maxv=j;
+            break;
+        }
+
+    }
+
+    cout << v-maxv;
     return 0;
 
 }
