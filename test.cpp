@@ -13,5 +13,6 @@ int main() {
     int max = 0x80000000;
     cout << min << endl;
     cout << max << endl;
+    system("pause");
     return 0;
 }
