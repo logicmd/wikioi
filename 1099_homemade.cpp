@@ -17,6 +17,25 @@ struct Word
     }
 };
 
+vector<string> replace(string &src, string &p, string &q) {
+    size_t i=0, j=0;
+    vector<string> res;
+    while(i<src.size()) {
+        size_t ii=i;
+        while(ii<src.size() && j<p.size() && src[ii]==p[j]) {
+            ii++;
+            j++;
+        }
+        if(j==p.size()) {
+            string replaced = src.substr(0, i) + q + src.substr(i+p.size());
+            res.push_back(replaced);
+        }
+        i++;
+        j=0;
+    }
+    return res;
+
+}
 
 int main()
 {
@@ -28,13 +47,14 @@ int main()
     map<string, string> dict;
     string aa, bb;
     while(cin >> aa >> bb) {
+
         dict.insert(make_pair(aa, bb));
     }
 
     while(!q.empty()) {
         Word cur = q.front();
         q.pop();
-        if(cur.c>9) {
+        if(cur.c==10) {
             cout << "NO ANSWER!" << endl;
             return 0;
         }
@@ -42,32 +62,20 @@ int main()
         for(map<string, string>::iterator i=dict.begin(); i!=dict.end(); i++) {
             string pp = i->first;
             string qq = i->second;
-            size_t found = 0;
-            while(found!=string::npos) {
-                if(found == 0) {
-                    found = cur.str.find(pp);
-                    if(found!=string::npos)
-                        found++;
-                } else {
-                    found = cur.str.find(pp, found);
-                }
-
-                if(found!=string::npos) {
-                    string word = cur.str.substr(0, found-1) + qq + cur.str.substr(found-1+pp.size());
-                    //cout << word << endl;
-                    if(word.compare(b)==0) {
+            vector<string> candidate = replace(cur.str, pp, qq);
+            if(candidate.size()>0) {
+                for(vector<string>::iterator word=candidate.begin();
+                    word!=candidate.end(); word++) {
+                    if((*word).compare(b)==0) {
                         cout << cur.c+1;
                         return 0;
                     }
-                    q.push(Word(word, cur.c+1));
+                    q.push(Word((*word), cur.c+1));
                 }
-
             }
-
         }
     }
 
 
     return 0;
 }
-
